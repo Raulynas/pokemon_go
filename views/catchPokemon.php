@@ -10,7 +10,7 @@ if ($_SESSION["logedIn"] != 1) {
     header("location: login.php");
 }
 
-$pokemons = getAllPokemonsByName();
+$pokemons = getAllPokemons();
 
 ?>
 

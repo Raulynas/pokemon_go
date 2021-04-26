@@ -13,32 +13,25 @@ if ($_SESSION["logedIn"] != 1) {
     header("location: login.php");
 }
 
-$pokemons = getAllPokemonsByName();
+$pokemons = getAllPokemons();
 
 
 if (isset($_GET["id"])) {
-    $pokemons = getAllPokemonsById();
+    $pokemons = getAllPokemonsById($_GET['order']);
 }
 
 if (isset($_GET["name"])) {
-    $pokemons = getAllPokemonsByName();
+    $pokemons = getAllPokemonsByName($_GET['order']);
 }
 if (isset($_GET["attack"])) {
-    $pokemons = getAllPokemonsByAttack();
+    $pokemons = getAllPokemonsByAttack($_GET['order']);
 }
 if (isset($_GET["defence"])) {
-    $pokemons = getAllPokemonsByDefence();
+    $pokemons = getAllPokemonsByDefence($_GET['order']);
 }
 if (isset($_GET["stamina"])) {
-    $pokemons = getAllPokemonsByStamina();
+    $pokemons = getAllPokemonsByStamina($_GET['order']);
 }
-
-
-
-
-
-
-
 
 
 ?>
@@ -54,19 +47,16 @@ if (isset($_GET["stamina"])) {
             <table class="highlight centered">
                 <thead>
                     <tr>
-                        <th><a href="allPokemons.php?id">ID</a></th>
-                        <th><a href="allPokemons.php?name">Name</a></th>
-                        <th><a href="allPokemons.php?attack">Max Attack</a></th>
-                        <th><a href="allPokemons.php?defence">Max Defence</a></th>
-                        <th><a href="allPokemons.php?stamina">Max Stamina</a></th>
+                        <th><a href="allPokemons.php?id&order=<?php echo isset($_GET['order']) ? !$_GET['order'] : 1; ?>">ID</a></th>
+                        <th><a href="allPokemons.php?name&order=<?php echo isset($_GET['order']) ? !$_GET['order'] : 1; ?>">Name</a></th>
+                        <th><a href="allPokemons.php?attack&order=<?php echo isset($_GET['order']) ? !$_GET['order'] : 1; ?>">Max Attack</a></th>
+                        <th><a href="allPokemons.php?defence&order=<?php echo isset($_GET['order']) ? !$_GET['order'] : 1; ?>">Max Defence</a></th>
+                        <th><a href="allPokemons.php?stamina&order=<?php echo isset($_GET['order']) ? !$_GET['order'] : 1; ?>">Max Stamina</a></th>
                         <th></th>
                     </tr>
                 </thead>
 
                 <tbody>
-
-
-
 
                     <?php
                     foreach ($pokemons as $pokemon) { ?>

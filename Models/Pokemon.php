@@ -24,8 +24,12 @@ class Pokemon
         $dbh = new Dbh();
         $sql = "INSERT INTO `pokemons` (`id`, `name`, `max_attack`, `max_defence`, `max_stamina`)
         VALUES (NULL, '" . $this->getName() . "', '" . $this->getMaxAttack() . "', '" . $this->getMaxDefence() . "', '" . $this->getMaxStamina() . "')";
-        echo $sql;
-        $dbh->connect()->query($sql);
+        if($dbh->connect()->query($sql)){
+            //success
+            header("Location:../views/addPokemon.php");
+        }else{
+            echo "ERROR: Pokemon has not been saved to database";
+        };
     }
 
     //GETTERS & SETTERS//
@@ -76,9 +80,10 @@ class Pokemon
 
 
 
-    static function getAllPokemonsByName()
+    static function getAllPokemons()
     {
         $dbh = new Dbh();
+
         $sql = "SELECT * from `pokemons` ORDER BY `name`";
         $result = $dbh->connect()->query($sql);
 
@@ -88,10 +93,12 @@ class Pokemon
         }
         return $pokemons;
     }
-    static function getAllPokemonsById()
+    static function getAllPokemonsByName($order)
     {
         $dbh = new Dbh();
-        $sql = "SELECT * from `pokemons` ORDER BY `id`";
+        $sort = $order ? "ASC" : "DESC";
+
+        $sql = "SELECT * from `pokemons` ORDER BY `name` $sort";
         $result = $dbh->connect()->query($sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -100,10 +107,11 @@ class Pokemon
         }
         return $pokemons;
     }
-    static function getAllPokemonsByAttack()
+    static function getAllPokemonsById($order)
     {
         $dbh = new Dbh();
-        $sql = "SELECT * from `pokemons` ORDER BY `max_attack` DESC";
+        $sort = $order? "ASC" : "DESC";
+        $sql = "SELECT * from `pokemons` ORDER BY `id` $sort";
         $result = $dbh->connect()->query($sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -112,10 +120,11 @@ class Pokemon
         }
         return $pokemons;
     }
-    static function getAllPokemonsByDefence()
+    static function getAllPokemonsByAttack($order)
     {
         $dbh = new Dbh();
-        $sql = "SELECT * from `pokemons` ORDER BY `max_defence` DESC";
+        $sort = $order ? "ASC" : "DESC";
+        $sql = "SELECT * from `pokemons` ORDER BY `max_attack` $sort";
         $result = $dbh->connect()->query($sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -124,10 +133,26 @@ class Pokemon
         }
         return $pokemons;
     }
-    static function getAllPokemonsByStamina()
+    static function getAllPokemonsByDefence($order)
     {
         $dbh = new Dbh();
-        $sql = "SELECT * from `pokemons` ORDER BY `max_stamina` DESC";
+        $sort = $order ? "ASC" : "DESC";
+
+        $sql = "SELECT * from `pokemons` ORDER BY `max_defence` $sort";
+        $result = $dbh->connect()->query($sql);
+
+        while ($row = $result->fetch_assoc()) {
+            $pokemon = new Pokemon($row['id'], $row['name'], $row['max_attack'], $row['max_defence'], $row['max_stamina'], $row['photo']);
+            $pokemons[] = $pokemon;
+        }
+        return $pokemons;
+    }
+    static function getAllPokemonsByStamina($order)
+    {
+        $dbh = new Dbh();
+        $sort = $order ? "ASC" : "DESC";
+
+        $sql = "SELECT * from `pokemons` ORDER BY `max_stamina` $sort";
         $result = $dbh->connect()->query($sql);
 
         while ($row = $result->fetch_assoc()) {

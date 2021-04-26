@@ -93,10 +93,18 @@ form {
 
 /* all users */
 
-table a {
+table > thead a {
 	text-decoration: none;
 	color: #ee6e73;
 	font-weight: bold;
+}
+table .user-details a{
+	text-decoration: none;
+	color: grey;
+}
+table .user-details{
+	text-decoration: none;
+	color: grey;
 }
 table {
 	margin-top: 50px;

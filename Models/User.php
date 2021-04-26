@@ -130,11 +130,23 @@ class User
             return $pokemon;
         }
     }
-    static function getAllUsersById()
+    static function getUserById($request)
+    {
+        $dbh = new Dbh();
+        $sql = "SELECT * from `users` WHERE  `id` = '$request'";
+        $result = $dbh->connect()->query($sql);
+
+        while ($row = $result->fetch_assoc()) {
+            $user = new User($row['id'], $row['name'], $row['surname'], $row['email'], $row['password'], $row['ownedPokemons'], $row['permission_lvl']);
+            return $user;
+        }
+    }
+    static function getAllUsers()
     {
         $users = [];
         $dbh = new Dbh();
-        $sql = "SELECT * from `users` ORDER BY `id`";
+
+        $sql = "SELECT * from users ORDER BY id";
         $result = $dbh->connect()->query($sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -143,11 +155,13 @@ class User
         }
         return $users;
     }
-
-    static function getAllUsersByName() {
+    static function getAllUsersById($order)
+    {
         $users = [];
         $dbh = new Dbh();
-        $sql = "SELECT * from `users` ORDER BY `name`";
+        $sort = $order ? "DESC" : "ASC";
+
+        $sql = "SELECT * from users ORDER BY id $sort";
         $result = $dbh->connect()->query($sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -156,10 +170,13 @@ class User
         }
         return $users;
     }
-    static function getAllUsersBySurname() {
+
+    static function getAllUsersByName($order) {
         $users = [];
         $dbh = new Dbh();
-        $sql = "SELECT * from `users` ORDER BY `surname`";
+        $sort = $order ? "ASC" : "DESC";
+
+        $sql = "SELECT * from `users` ORDER BY `name` $sort";
         $result = $dbh->connect()->query($sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -168,10 +185,12 @@ class User
         }
         return $users;
     }
-    static function getAllUsersByEmail() {
+    static function getAllUsersBySurname($order) {
         $users = [];
         $dbh = new Dbh();
-        $sql = "SELECT * from `users` ORDER BY `email`";
+        $sort = $order ? "ASC" : "DESC";
+
+        $sql = "SELECT * from `users` ORDER BY `surname` $sort";
         $result = $dbh->connect()->query($sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -180,10 +199,12 @@ class User
         }
         return $users;
     }
-    static function getAllUsersByLevel() {
+    static function getAllUsersByEmail($order) {
         $users = [];
         $dbh = new Dbh();
-        $sql = "SELECT * from `users` ORDER BY `permission_lvl` DESC";
+        $sort = $order ? "ASC" : "DESC";
+
+        $sql = "SELECT * from users ORDER BY email $sort";
         $result = $dbh->connect()->query($sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -192,10 +213,12 @@ class User
         }
         return $users;
     }
-    static function getAllUsersByPokemons() {
+    static function getAllUsersByLevel($order) {
         $users = [];
         $dbh = new Dbh();
-        $sql = "SELECT * from `users` ORDER BY `ownedPokemons`";
+        $sort = $order ? "ASC" : "DESC";
+
+        $sql = "SELECT * from `users` ORDER BY `permission_lvl` $sort";
         $result = $dbh->connect()->query($sql);
 
         while ($row = $result->fetch_assoc()) {
@@ -204,6 +227,22 @@ class User
         }
         return $users;
     }
+    static function getAllUsersByPokemons($order) {
+        $users = [];
+        $dbh = new Dbh();
+        $sort = $order ? "ASC" : "DESC";
+        $sql = "SELECT * from `users` ORDER BY `ownedPokemons` $sort";
+        $result = $dbh->connect()->query($sql);
 
-    
+        while ($row = $result->fetch_assoc()) {
+            $user = new User($row['id'], $row['name'], $row['surname'], $row['email'], $row['password'], $row['ownedPokemons'], $row['permission_lvl']);
+            $users[] = $user;
+        }
+        return $users;
+    }
+    static function deleteUser($id) {
+        $dbh = new Dbh();
+        $sql = "DELETE from `users` WHERE id = $id";
+        $dbh->connect()->query($sql);
+    }
 }

@@ -4,7 +4,7 @@ include("../Models/User.php");
 
 function register($request)
 {
-    $user = new User(NULL, $request["name"], $request["surname"], $request["email"], sha1($request["password1"]), $request["ownedPokemons"] ,$request["permission_lvl"]);
+    $user = new User(NULL, $request["name"], $request["surname"], $request["email"], sha1($request["password1"]), $request["ownedPokemons"], $request["permission_lvl"]);
     $user->save();
 }
 
@@ -51,28 +51,40 @@ function getPokemonById($request)
 
 
 
-function getAllUsersById()
+function getUserById($request)
 {
-    return User::getAllUsersById();
+    return User::getUserById($request);
 }
-function getAllUsersByName()
+function getAllUsers()
 {
-    return User::getAllUsersByName();
+    return User::getAllUsers();
 }
-function getAllUsersBySurname()
+function getAllUsersById($request)
 {
-    return User::getAllUsersBySurname();
+    return User::getAllUsersById($request);
 }
-function getAllUsersByEmail()
+function getAllUsersByName($request)
 {
-    return User::getAllUsersByEmail();
+    return User::getAllUsersByName($request);
 }
-function getAllUsersByLevel()
+function getAllUsersBySurname($request)
 {
-    return User::getAllUsersByLevel();
+    return User::getAllUsersBySurname($request);
 }
-function getAllUsersByPokemons()
+function getAllUsersByEmail($request)
 {
-    return User::getAllUsersByPokemons();
+    return User::getAllUsersByEmail($request);
+}
+function getAllUsersByLevel($request)
+{
+    return User::getAllUsersByLevel($request);
+}
+function getAllUsersByPokemons($request)
+{
+    return User::getAllUsersByPokemons($request);
 }
 
+function deleteUser($id)
+{
+    User::deleteUser($id);
+}
