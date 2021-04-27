@@ -18,7 +18,8 @@ if ($_SESSION["count"] < 2) {
     $welcomeMessage = "";
 }
 
-$userPokemons = getAllUserPokemons($_SESSION["email"]); // array of pokemon IDs
+$userPokemons = getUserPokemons($_SESSION["id"]); // array of pokemon IDs
+
 ?>
 
 <!DOCTYPE html>

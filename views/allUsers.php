@@ -16,23 +16,23 @@ if ($_SESSION["logedIn"] != 1) {
 $users = getAllUsers();
 
 if (isset($_GET["id"])) {
-    $users = getAllUsersById($_GET['order']);
+    $users = getAllUsersSorted("user_id", $_GET['order']);
 }
 
 if (isset($_GET["name"])) {
-    $users = getAllUsersByName($_GET['order']);
+    $users = getAllUsersSorted("user_name", $_GET['order']);
 }
 if (isset($_GET["surname"])) {
-    $users = getAllUsersBySurname($_GET['order']);
+    $users = getAllUsersSorted("surname", $_GET['order']);
 }
 if (isset($_GET["email"])) {
-    $users = getAllUsersByEmail($_GET['order']);
+    $users = getAllUsersSorted("email", $_GET['order']);
 }
 if (isset($_GET["level"])) {
-    $users = getAllUsersByLevel($_GET['order']);
+    $users = getAllUsersSorted("permission_lvl", $_GET['order']);
 }
 if (isset($_GET["pokemons"])) {
-    $users = getAllUsersByPokemons($_GET['order']);
+    $users = getAllUsersSorted("number_of_pokemons", $_GET['order']);
 }
 
 ?>
@@ -72,8 +72,8 @@ if (isset($_GET["pokemons"])) {
                             <td> <a href="userDetails.php?id=<?php echo $user->getId() ?>"><?php echo $user->getName() ?> </a></td>
                             <td> <a href="userDetails.php?id=<?php echo $user->getId() ?>"><?php echo $user->getSurname() ?> </a></td>
                             <td><a href="userDetails.php?id=<?php echo $user->getId() ?>"> <?php echo $user->getEmail() ?> </a></td>
-                            <td> <?php echo $user->getPermission_lvl() ?> </td>
-                            <td><?php echo count(($user->getOwnedPokemons())) ?></td>
+                            <td><a href="userDetails.php?id=<?php echo $user->getId() ?>"> <?php echo $user->getPermission_lvl() ?> </a></td>
+                            <td><a href="userDetails.php?id=<?php echo $user->getId() ?>"> <?php echo count(getUserPokemons($user->getId())) ?> </a></td>
                         </tr>
                     <?php } ?>
 

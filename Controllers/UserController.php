@@ -20,6 +20,15 @@ function login($request)
     return $setPassword == sha1($request["password"]) ? 1 : 0;
 }
 
+function getUserId($request)
+{
+    $dbh = new Dbh();
+    $sql = "SELECT * from `users` where email ='" . $request['email'] . "'";
+    $result =  $dbh->connect()->query($sql);
+    while ($row = $result->fetch_assoc()) {
+        return $row["id"];
+    }
+}
 function getUserName($request)
 {
     $dbh = new Dbh();
@@ -38,17 +47,10 @@ function getUserSurname($request)
         return $row["surname"];
     }
 }
-function getAllUserPokemons($request)
-{
-    return User::getAllUserPokemons($request);
-}
 function getPokemonById($request)
 {
     return User::getPokemonById($request);
 }
-
-
-
 
 
 function getUserById($request)
@@ -59,30 +61,17 @@ function getAllUsers()
 {
     return User::getAllUsers();
 }
-function getAllUsersById($request)
+function getAllUsersSorted($arg, $order)
 {
-    return User::getAllUsersById($request);
+    return User::getAllUsersSorted($arg, $order);
 }
-function getAllUsersByName($request)
+
+
+function getUserPokemons($user_id)
 {
-    return User::getAllUsersByName($request);
+    return User::getUserPokemons($user_id);
 }
-function getAllUsersBySurname($request)
-{
-    return User::getAllUsersBySurname($request);
-}
-function getAllUsersByEmail($request)
-{
-    return User::getAllUsersByEmail($request);
-}
-function getAllUsersByLevel($request)
-{
-    return User::getAllUsersByLevel($request);
-}
-function getAllUsersByPokemons($request)
-{
-    return User::getAllUsersByPokemons($request);
-}
+
 
 function deleteUser($id)
 {

@@ -8,26 +8,15 @@ class User
     private $surname;
     private $email;
     private $password;
-    private $ownedPokemons;
     private $permission_lvl;
 
-    public function toJson($var)
-    {
-        return json_encode($var);
-    }
-    public function fromJson($var)
-    {
-        return json_decode($var);
-    }
-
-    function __construct($id, $name, $surname, $email, $password, $ownedPokemons, $permission_lvl)
+    function __construct($id, $name, $surname, $email, $password, $permission_lvl)
     {
         $this->id = $id;
         $this->name = ucfirst(strtolower($name));
         $this->surname = ucfirst(strtolower($surname));
         $this->email = $email;
         $this->password = $password;
-        $this->ownedPokemons = $ownedPokemons;
         $this->permission_lvl = $permission_lvl;
     }
 
@@ -35,8 +24,8 @@ class User
     public function save()
     {
         $dbh = new Dbh();
-        $sql = "INSERT INTO `users` (`id`, `name`, `surname`, `email`, `password`, `ownedPokemons`, `permission_lvl`) 
-        VALUES (NULL, '" . $this->getName() . "', '" . $this->getSurname() . "',  '" . $this->getEmail() . "',  '" . $this->getPassword() . "', '" . $this->toJson($this->getOwnedPokemons) . "', '$this->getPermission_lvl()')";
+        $sql = "INSERT INTO `users` (`id`, `name`, `surname`, `email`, `password`, `permission_lvl`) 
+        VALUES (NULL, '" . $this->getName() . "', '" . $this->getSurname() . "',  '" . $this->getEmail() . "', '" . $this->getPassword() . "', '$this->getPermission_lvl()')";
         $dbh->connect()->query($sql);
     }
 
@@ -72,7 +61,7 @@ class User
     }
     public function getEmail()
     {
-        return $this->email;
+        return strtolower($this->email);
     }
     //-----------//
 
@@ -86,15 +75,6 @@ class User
     }
     //-----------//
 
-    public function setOwnedPokemons($value)
-    {
-        $this->ownedPokemons = $value;
-    }
-    public function getOwnedPokemons()
-    {
-        return $this->fromJson($this->ownedPokemons);
-    }
-    //-----------//
 
     public function setPermission_lvl($value)
     {
@@ -105,16 +85,6 @@ class User
         return $this->permission_lvl;
     }
     //GETTERS & SETTERS//
-
-
-    static function getAllUserPokemons($request) // returns list of pokemon ID's
-    {
-        $dbh = new Dbh();
-        $sql = "SELECT `ownedPokemons` FROM `users` WHERE `email` = '$request'";
-        $result = $dbh->connect()->query($sql);
-        $row = $result->fetch_assoc();
-        return (json_decode($row['ownedPokemons']));
-    }
 
 
 
@@ -133,11 +103,11 @@ class User
     static function getUserById($request)
     {
         $dbh = new Dbh();
-        $sql = "SELECT * from `users` WHERE  `id` = '$request'";
+        $sql = "SELECT * from `users` WHERE id = $request";
         $result = $dbh->connect()->query($sql);
 
         while ($row = $result->fetch_assoc()) {
-            $user = new User($row['id'], $row['name'], $row['surname'], $row['email'], $row['password'], $row['ownedPokemons'], $row['permission_lvl']);
+            $user = new User($row['id'], $row['name'], $row['surname'], $row['email'], NULL, $row['permission_lvl']);
             return $user;
         }
     }
@@ -146,101 +116,90 @@ class User
         $users = [];
         $dbh = new Dbh();
 
-        $sql = "SELECT * from users ORDER BY id";
+        $sql = "SELECT u.id AS user_id,
+        u.name AS user_name,
+        u.surname,
+        u.email,
+        u.permission_lvl,
+        COUNT(up.user_id) AS number_of_pokemons
+        FROM users AS u
+        LEFT JOIN user_pokemons AS up
+        ON u.id = up.user_id
+        GROUP BY u.id";
         $result = $dbh->connect()->query($sql);
-
         while ($row = $result->fetch_assoc()) {
-            $user = new User($row['id'], $row['name'], $row['surname'], $row['email'], $row['password'], $row['ownedPokemons'], $row['permission_lvl']);
+            $user = new User($row['user_id'], $row['user_name'], $row['surname'], $row['email'], NULL, $row['permission_lvl']);
             $users[] = $user;
         }
         return $users;
     }
-    static function getAllUsersById($order)
+    static function getAllUsersSorted($arg, $order)
     {
         $users = [];
         $dbh = new Dbh();
         $sort = $order ? "DESC" : "ASC";
+        $sql = "SELECT u.id AS user_id,
+        u.name AS user_name,
+        u.surname,
+        u.email,
+        u.permission_lvl,
+        COUNT(up.user_id) AS number_of_pokemons
+        FROM users AS u
+        LEFT JOIN user_pokemons AS up
+        ON u.id = up.user_id
+        GROUP BY u.id
+        ORDER BY $arg $sort";
 
-        $sql = "SELECT * from users ORDER BY id $sort";
         $result = $dbh->connect()->query($sql);
 
         while ($row = $result->fetch_assoc()) {
-            $user = new User($row['id'], $row['name'], $row['surname'], $row['email'], $row['password'], $row['ownedPokemons'], $row['permission_lvl']);
+            $user = new User($row['user_id'], $row['user_name'], $row['surname'], $row['email'], NULL, $row['permission_lvl']);
             $users[] = $user;
         }
         return $users;
     }
 
-    static function getAllUsersByName($order) {
-        $users = [];
+
+
+    static function getUserPokemons($user_id) :array
+    {
+        $pokemons = [];
         $dbh = new Dbh();
-        $sort = $order ? "ASC" : "DESC";
-
-        $sql = "SELECT * from `users` ORDER BY `name` $sort";
+        $sql = "SELECT p.id AS pokemon_id
+        FROM pokemons AS p
+        INNER JOIN user_pokemons AS up
+        ON
+            p.id = up.pokemon_id
+        INNER JOIN users AS u
+        ON
+            up.user_id = u.id
+        WHERE
+            u.id = $user_id";
         $result = $dbh->connect()->query($sql);
+        while($row = $result->fetch_assoc()){
 
-        while ($row = $result->fetch_assoc()) {
-            $user = new User($row['id'], $row['name'], $row['surname'], $row['email'], $row['password'], $row['ownedPokemons'], $row['permission_lvl']);
-            $users[] = $user;
-        }
-        return $users;
+            $pokemons[]= $row["pokemon_id"];
+        };
+        return $pokemons;
     }
-    static function getAllUsersBySurname($order) {
-        $users = [];
-        $dbh = new Dbh();
-        $sort = $order ? "ASC" : "DESC";
 
-        $sql = "SELECT * from `users` ORDER BY `surname` $sort";
-        $result = $dbh->connect()->query($sql);
 
-        while ($row = $result->fetch_assoc()) {
-            $user = new User($row['id'], $row['name'], $row['surname'], $row['email'], $row['password'], $row['ownedPokemons'], $row['permission_lvl']);
-            $users[] = $user;
-        }
-        return $users;
-    }
-    static function getAllUsersByEmail($order) {
-        $users = [];
-        $dbh = new Dbh();
-        $sort = $order ? "ASC" : "DESC";
 
-        $sql = "SELECT * from users ORDER BY email $sort";
-        $result = $dbh->connect()->query($sql);
 
-        while ($row = $result->fetch_assoc()) {
-            $user = new User($row['id'], $row['name'], $row['surname'], $row['email'], $row['password'], $row['ownedPokemons'], $row['permission_lvl']);
-            $users[] = $user;
-        }
-        return $users;
-    }
-    static function getAllUsersByLevel($order) {
-        $users = [];
-        $dbh = new Dbh();
-        $sort = $order ? "ASC" : "DESC";
 
-        $sql = "SELECT * from `users` ORDER BY `permission_lvl` $sort";
-        $result = $dbh->connect()->query($sql);
 
-        while ($row = $result->fetch_assoc()) {
-            $user = new User($row['id'], $row['name'], $row['surname'], $row['email'], $row['password'], $row['ownedPokemons'], $row['permission_lvl']);
-            $users[] = $user;
-        }
-        return $users;
-    }
-    static function getAllUsersByPokemons($order) {
-        $users = [];
-        $dbh = new Dbh();
-        $sort = $order ? "ASC" : "DESC";
-        $sql = "SELECT * from `users` ORDER BY `ownedPokemons` $sort";
-        $result = $dbh->connect()->query($sql);
 
-        while ($row = $result->fetch_assoc()) {
-            $user = new User($row['id'], $row['name'], $row['surname'], $row['email'], $row['password'], $row['ownedPokemons'], $row['permission_lvl']);
-            $users[] = $user;
-        }
-        return $users;
-    }
-    static function deleteUser($id) {
+
+
+
+
+
+
+
+
+
+    static function deleteUser($id)
+    {
         $dbh = new Dbh();
         $sql = "DELETE from `users` WHERE id = $id";
         $dbh->connect()->query($sql);
