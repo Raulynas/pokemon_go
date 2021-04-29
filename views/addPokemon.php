@@ -2,8 +2,8 @@
 if (!isset($_SESSION["logedIn"])) {
     session_start();
 }
-if ($_SESSION["logedIn"] != 1) {
-    header("location: login.php");
+if ($_SESSION["logedIn"] != 1 || $_SESSION["permission_lvl"] < 500) {
+    header("location: myPokemons.php");
 }
 
 include("../Controllers/PokemonController.php");

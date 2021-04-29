@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" || $_SESSION["pokemonCought"] == 1) {
 
     $allPokemons = getAllPokemons();
 
-    $randPokemon = $allPokemons[rand(0, count($allPokemons))];
+    $randPokemon = $allPokemons[rand(0, count($allPokemons) - 1)];
     $pokemonToCatch = new Pokemon($randPokemon->getId(), $randPokemon->getName(), NULL, NULL, NULL);
 
     $_SESSION["pokemon_id"] = $randPokemon->getId();
@@ -53,7 +53,7 @@ if ($_SESSION["pokemonCought"] != 1) {
     }
 }
 $msg2 = "";
-if($_SESSION["attempts"] > 0 && $_SESSION["pokemonCought"] != 1 && isset($_POST["catch"])){
+if ($_SESSION["attempts"] > 0 && $_SESSION["pokemonCought"] != 1 && isset($_POST["catch"])) {
     $msg2 = "Missed!";
 }
 

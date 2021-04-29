@@ -7,12 +7,19 @@ if (!isset($_SESSION["logedIn"])) {
 $home = '<li><a href="../views/index.php">Home</a></li>';
 $allPokemons = '<li><a href="../views/allPokemons.php">All Pokemons</a></li>';
 $userhome = '<li><a href="../views/myPokemons.php">My Pokemons</a></li>';
+$catchPokemon = '<li><a href="../views/catchPokemon.php">Play</a></li>';
 $addPokemon = '<li><a href="../views/addPokemon.php">Add Pokemon</a></li>';
 $allUsers = '<li><a href="../views/allUsers.php">All Users</a></li>';
 $pokemonDatabase = '<li><a href="../views/pokemonDatabase.php">Pokemon database</a></li>';
 $login = '<li><a href="../views/login.php">Log in</a></li>';
 $logout = '<li><a href="../views/login.php">Logout</a></li>';
 $signup = '<li><a href="../views/signup.php">Sign up</a></li>';
+
+$headerNav = $home . $login . $signup;
+if ($_SESSION["logedIn"] == 1) $headerNav = $userhome . $catchPokemon . $allPokemons . $logout;
+if ($_SESSION["logedIn"] == 1 && $_SESSION["permission_lvl"] > 500) $headerNav = $userhome . $allPokemons . $allUsers . $addPokemon . $pokemonDatabase . $logout
+
+
 ?>
 
 
@@ -41,19 +48,9 @@ $signup = '<li><a href="../views/signup.php">Sign up</a></li>';
             <div class="nav-wrapper">
                 <a href="../index.php" class="brand-logo center">Pokemon GO</a>
                 <ul class="right hide-on-med-and-down">
-                    <?php if ($_SESSION["logedIn"] == 0) echo $home ?>
-                    <?php if ($_SESSION["logedIn"] == 0) echo $login ?>
-                    <?php if ($_SESSION["logedIn"] == 0) echo $signup ?>
-
-                    <?php if ($_SESSION["logedIn"] == 1) echo $userhome ?>
-                    <?php if ($_SESSION["logedIn"] == 1) echo $allPokemons ?>
-                    <?php if ($_SESSION["logedIn"] == 1) echo $allUsers ?>
-                    <?php if ($_SESSION["logedIn"] == 1) echo $addPokemon ?>
-                    <?php if ($_SESSION["logedIn"] == 1) echo $pokemonDatabase ?>
-                    <?php if ($_SESSION["logedIn"] == 1) echo $logout ?>
+                    <?php echo $headerNav ?>
                 </ul>
             </div>
         </nav>
 
     </header>
-

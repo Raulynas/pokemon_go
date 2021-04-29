@@ -25,7 +25,7 @@ class User
     {
         $dbh = new Dbh();
         $sql = "INSERT INTO `users` (`id`, `name`, `surname`, `email`, `password`, `permission_lvl`) 
-        VALUES (NULL, '" . $this->getName() . "', '" . $this->getSurname() . "',  '" . $this->getEmail() . "', '" . $this->getPassword() . "', '$this->getPermission_lvl()')";
+        VALUES (NULL, '" . $this->getName() . "', '" . $this->getSurname() . "',  '" . $this->getEmail() . "', '" . $this->getPassword() . "', 1)";
         $dbh->connect()->query($sql);
     }
 

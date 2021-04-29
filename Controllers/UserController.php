@@ -47,6 +47,18 @@ function getUserSurname($request)
         return $row["surname"];
     }
 }
+function getUserPermission_lvl($request)
+{
+    $dbh = new Dbh();
+    $sql = "SELECT permission_lvl from `users` where email ='" . $request['email'] . "'";
+    $result =  $dbh->connect()->query($sql);
+    while ($row = $result->fetch_assoc()) {
+        return $row["permission_lvl"];
+    }
+}
+
+
+
 function getPokemonById($request)
 {
     return User::getPokemonById($request);

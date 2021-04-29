@@ -21,7 +21,7 @@ $pokemons = getAllPokemons();
 <main>
 
     <section class="container grey-text">
-        <h5 class="center grey-text" style="padding: 50px 0;"><a href="catchPokemon.php" class="btn">Catch a Pokemon</a></h5>
+        <h5 class="center grey-text" style="padding: 20px 0;"></h5>
 
         <container class="cards">
 

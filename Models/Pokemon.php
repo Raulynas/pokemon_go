@@ -82,23 +82,28 @@ class Pokemon
     {
 
         $users = [];
+        $user = [];
         $dbh = new Dbh();
         $sql = "SELECT
-        u.id AS user_id
+        u.id,
+        u.email
         FROM
-            users AS u
+        users AS u
         INNER JOIN user_pokemons AS up
         ON
-            u.id = up.user_id
+        up.user_id = u.id
         INNER JOIN pokemons AS p
-        ON
-            up.pokemon_id = p.id
+        ON 
+        up.pokemon_id = p.id  
         WHERE
-            p.id = $pokemon_id";
+        p.id = $pokemon_id
+        GROUP BY u.id";
         $result = $dbh->connect()->query($sql);
         while ($row = $result->fetch_assoc()) {
 
-            $users[] = $row["user_id"];
+            $user["id"] = $row["id"];
+            $user["email"] = $row["email"];
+            $users[] = $user;
         };
         return $users;
     }
@@ -127,7 +132,6 @@ class Pokemon
             return $pokemon;
         }
     }
-
     static function getAllPokemons()
     {
         $dbh = new Dbh();

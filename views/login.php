@@ -47,6 +47,7 @@ if (isset($_POST["submit"])) {
         $_SESSION["name"] = getUserName($_POST);
         $_SESSION["surname"] = getUserSurname($_POST);
         $_SESSION["id"] = getUserId($_POST);
+        $_SESSION["permission_lvl"] = getUserPermission_lvl($_POST);
         header("location: myPokemons.php");
     }
     if ($_SESSION["logedIn"] == 0) {

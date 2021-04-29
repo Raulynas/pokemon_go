@@ -31,6 +31,7 @@ $_SESSION["numberOfPokemons"] = count($userPokemons);
 
 <main>
     <section class="container grey-text">
+        <h6 class="center grey-text" style="padding-top: 40px;"><?php echo  $_SESSION["email"] ?></h6>
         <h5 class="center grey-text" style="padding-top: 40px;"><?php echo $welcomeMessage ?></h5>
         <?php if ($_SESSION["numberOfPokemons"] == 0) { ?>
             <h5 class="center grey-text" style="padding-bottom: 20px;"> Your have no Pokemons yet :( </h5>
@@ -75,8 +76,10 @@ $_SESSION["numberOfPokemons"] = count($userPokemons);
 
 
                     </div>
-                    <div class="card-action" style="margin: 0;">
+                    <div class="card-action" style="margin: 0; padding: 0;">
+                        <p> ID: <?php echo $pokemon->getId() ?></p>
                     </div>
+                </div>
 
 
                 </div>
