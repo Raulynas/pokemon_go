@@ -29,6 +29,13 @@ class User
         $dbh->connect()->query($sql);
     }
 
+    public function addPokemon($pokemon_id, $user_id)
+    {
+        $dbh = new Dbh();
+        $sql = "INSERT INTO `user_pokemons` (`id`, `pokemon_id`, `user_id`, `attack`, `defence`, `stamina`) VALUES (NULL, $pokemon_id, $user_id, '12', '50', '60')";
+        $dbh->connect()->query($sql);
+    }
+
     //GETTERS & SETTERS//
 
     public function getId()
@@ -116,19 +123,10 @@ class User
         $users = [];
         $dbh = new Dbh();
 
-        $sql = "SELECT u.id AS user_id,
-        u.name AS user_name,
-        u.surname,
-        u.email,
-        u.permission_lvl,
-        COUNT(up.user_id) AS number_of_pokemons
-        FROM users AS u
-        LEFT JOIN user_pokemons AS up
-        ON u.id = up.user_id
-        GROUP BY u.id";
+        $sql = "SELECT * from `users`";
         $result = $dbh->connect()->query($sql);
         while ($row = $result->fetch_assoc()) {
-            $user = new User($row['user_id'], $row['user_name'], $row['surname'], $row['email'], NULL, $row['permission_lvl']);
+            $user = new User($row['id'], $row['name'], $row['surname'], $row['email'], NULL, $row['permission_lvl']);
             $users[] = $user;
         }
         return $users;
@@ -138,20 +136,8 @@ class User
         $users = [];
         $dbh = new Dbh();
         $sort = $order ? "DESC" : "ASC";
-        $sql = "SELECT u.id AS user_id,
-        u.name AS user_name,
-        u.surname,
-        u.email,
-        u.permission_lvl,
-        COUNT(up.user_id) AS number_of_pokemons
-        FROM users AS u
-        LEFT JOIN user_pokemons AS up
-        ON u.id = up.user_id
-        GROUP BY u.id
-        ORDER BY $arg $sort";
-
+        $sql = "SELECT * from `users` ORDER BY $arg $sort";
         $result = $dbh->connect()->query($sql);
-
         while ($row = $result->fetch_assoc()) {
             $user = new User($row['user_id'], $row['user_name'], $row['surname'], $row['email'], NULL, $row['permission_lvl']);
             $users[] = $user;
@@ -159,44 +145,33 @@ class User
         return $users;
     }
 
-
-
-    static function getUserPokemons($user_id) :array
+    static function getUserPokemons($user_id)
     {
         $pokemons = [];
         $dbh = new Dbh();
-        $sql = "SELECT p.id AS pokemon_id
-        FROM pokemons AS p
-        INNER JOIN user_pokemons AS up
-        ON
-            p.id = up.pokemon_id
-        INNER JOIN users AS u
-        ON
-            up.user_id = u.id
-        WHERE
-            u.id = $user_id";
+        $sql = "SELECT
+        up.pokemon_id AS id,
+        p.name,
+        up.attack AS max_attack,
+        up.defence AS max_defence,
+        up.stamina AS max_stamina
+    FROM
+        user_pokemons AS up
+    INNER JOIN users AS u
+    ON
+        u.id = up.user_id
+    INNER JOIN pokemons AS p
+    ON
+        p.id = up.pokemon_id
+    WHERE
+    u.id = $user_id";
         $result = $dbh->connect()->query($sql);
-        while($row = $result->fetch_assoc()){
-
-            $pokemons[]= $row["pokemon_id"];
+        while ($row = $result->fetch_assoc()) {
+            $pokemon = new Pokemon($row['id'], $row['name'], $row['max_attack'], $row['max_defence'], $row['max_stamina'], NULL);
+            $pokemons[] = $pokemon;
         };
         return $pokemons;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     static function deleteUser($id)
     {

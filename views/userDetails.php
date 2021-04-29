@@ -24,7 +24,6 @@ $userPokemons = getUserPokemons($_GET["id"]); // array of pokemon IDs
 
 if (isset($_GET["id"])) {
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -60,9 +59,8 @@ if (isset($_GET["id"])) {
                     <tr>
                         <input type="hidden" name="id_to_delete" value=" <?php echo $user->getId() ?> ">
                         <td><input type="submit" name="delete" value="Delete User" class="btn red z-depth-0"></td>
-                        <td><a href="allUsers.php" class="btn z-depth-0" </a>Back to all users</td>
+                        <td><a href="<?php echo $_SERVER['HTTP_REFERER'] ?>" class="btn z-depth-0" </a>Back to all users</td>
                     </tr>
-
 
                 </tbody>
             </table>
@@ -85,24 +83,28 @@ if (isset($_GET["id"])) {
                         <div class="description grey-text">
                             <div class="left-box">Max attack: <?php echo getPokemonById($id)->getMaxAttack() ?></div>
                             <div class="progress-background">
-                                <div class="progr" style="width: <?php echo getPokemonById($id)->getMaxAttack() ?>%;"></div>
+                                <div class="progr1" style="width: <?php echo getPokemonById($id)->getMaxAttack() ?>%;"></div>
                             </div>
                         </div>
                         <div class="description grey-text">
                             <div class="left-box">Max defence: <?php echo getPokemonById($id)->getMaxDefence() ?></div>
                             <div class="progress-background">
-                                <div class="progr" style="width: <?php echo getPokemonById($id)->getMaxDefence() ?>%;"></div>
+                                <div class="progr1" style="width: <?php echo getPokemonById($id)->getMaxDefence() ?>%;"></div>
                             </div>
                         </div>
                         <div class="description grey-text">
                             <div class="left-box">Max stamina: <?php echo getPokemonById($id)->getMaxStamina() ?></div>
                             <div class="progress-background">
-                                <div class="progr" style="width: <?php echo getPokemonById($id)->getMaxStamina() ?>%;"></div>
+                                <div class="progr1" style="width: <?php echo getPokemonById($id)->getMaxStamina() ?>%;"></div>
                             </div>
                         </div>
 
 
                     </div>
+                    <div class="card-action" style="margin: 0; padding: 0;">
+                        <p> ID: <?php echo getPokemonById($id)->getId() ?></p>
+                    </div>
+
 
                 </div>
             <?php

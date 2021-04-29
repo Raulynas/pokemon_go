@@ -5,11 +5,11 @@ if (!isset($_SESSION["logedIn"])) {
 }
 
 $home = '<li><a href="../views/index.php">Home</a></li>';
-$catchPokemon = '<li><a href="../views/catchPokemon.php">Catch Pokemon</a></li>';
+$allPokemons = '<li><a href="../views/allPokemons.php">All Pokemons</a></li>';
 $userhome = '<li><a href="../views/myPokemons.php">My Pokemons</a></li>';
 $addPokemon = '<li><a href="../views/addPokemon.php">Add Pokemon</a></li>';
 $allUsers = '<li><a href="../views/allUsers.php">All Users</a></li>';
-$allPokemons = '<li><a href="../views/allPokemons.php">All Pokemons</a></li>';
+$pokemonDatabase = '<li><a href="../views/pokemonDatabase.php">Pokemon database</a></li>';
 $login = '<li><a href="../views/login.php">Log in</a></li>';
 $logout = '<li><a href="../views/login.php">Logout</a></li>';
 $signup = '<li><a href="../views/signup.php">Sign up</a></li>';
@@ -46,10 +46,10 @@ $signup = '<li><a href="../views/signup.php">Sign up</a></li>';
                     <?php if ($_SESSION["logedIn"] == 0) echo $signup ?>
 
                     <?php if ($_SESSION["logedIn"] == 1) echo $userhome ?>
-                    <?php if ($_SESSION["logedIn"] == 1) echo $catchPokemon ?>
-                    <?php if ($_SESSION["logedIn"] == 1) echo $addPokemon ?>
-                    <?php if ($_SESSION["logedIn"] == 1) echo $allUsers ?>
                     <?php if ($_SESSION["logedIn"] == 1) echo $allPokemons ?>
+                    <?php if ($_SESSION["logedIn"] == 1) echo $allUsers ?>
+                    <?php if ($_SESSION["logedIn"] == 1) echo $addPokemon ?>
+                    <?php if ($_SESSION["logedIn"] == 1) echo $pokemonDatabase ?>
                     <?php if ($_SESSION["logedIn"] == 1) echo $logout ?>
                 </ul>
             </div>

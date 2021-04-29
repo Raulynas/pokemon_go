@@ -1,13 +1,10 @@
 <?php
 
-
 include("../Controllers/PokemonController.php");
 
 if (!isset($_SESSION["logedIn"])) {
     session_start();
 }
-
-$_SESSION["count"]++;
 
 if ($_SESSION["logedIn"] != 1) {
     header("location: login.php");
@@ -15,68 +12,62 @@ if ($_SESSION["logedIn"] != 1) {
 
 $pokemons = getAllPokemons();
 
-
-if (isset($_GET["id"])) {
-    $pokemons = getAllPokemonsById($_GET['order']);
-}
-
-if (isset($_GET["name"])) {
-    $pokemons = getAllPokemonsByName($_GET['order']);
-}
-if (isset($_GET["attack"])) {
-    $pokemons = getAllPokemonsByAttack($_GET['order']);
-}
-if (isset($_GET["defence"])) {
-    $pokemons = getAllPokemonsByDefence($_GET['order']);
-}
-if (isset($_GET["stamina"])) {
-    $pokemons = getAllPokemonsByStamina($_GET['order']);
-}
-
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <?php include("templates/header.php") ?>
-
 <main>
-    <section class="container grey-text centered">
-        <form method="GET" action="" class="pokemon-form">
-            <table class="highlight centered">
-                <thead>
-                    <tr>
-                        <th><a href="allPokemons.php?id&order=<?php echo isset($_GET['order']) ? !$_GET['order'] : 1; ?>">ID</a></th>
-                        <th><a href="allPokemons.php?name&order=<?php echo isset($_GET['order']) ? !$_GET['order'] : 1; ?>">Name</a></th>
-                        <th><a href="allPokemons.php?attack&order=<?php echo isset($_GET['order']) ? !$_GET['order'] : 1; ?>">Max Attack</a></th>
-                        <th><a href="allPokemons.php?defence&order=<?php echo isset($_GET['order']) ? !$_GET['order'] : 1; ?>">Max Defence</a></th>
-                        <th><a href="allPokemons.php?stamina&order=<?php echo isset($_GET['order']) ? !$_GET['order'] : 1; ?>">Max Stamina</a></th>
-                        <th></th>
-                    </tr>
-                </thead>
 
-                <tbody>
+    <section class="container grey-text">
+        <h5 class="center grey-text" style="padding: 50px 0;"><a href="catchPokemon.php" class="btn">Catch a Pokemon</a></h5>
 
-                    <?php
-                    foreach ($pokemons as $pokemon) { ?>
+        <container class="cards">
 
-                        <tr>
-                            <td> <?php echo $pokemon->getId() ?> </td>
-                            <td> <?php echo $pokemon->getName() ?> </td>
-                            <td> <?php echo $pokemon->getMaxAttack() ?> </td>
-                            <td> <?php echo $pokemon->getMaxDefence() ?> </td>
-                            <td> <?php echo $pokemon->getMaxStamina() ?> </td>
-                        </tr>
-                    <?php } ?>
+            <?php
+            foreach ($pokemons as $value) { ?>
 
-                </tbody>
-            </table>
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://assets.thesilphroad.com/img/pokemon/icons/96x96/<?php echo $value->getId() ?>.png" alt="pokemon">
+                    </div>
+                    <div class="card-content">
+                        <span class="card-title grey-text text-darken-4 center-align"><?php echo $value->getName() ?></span>
 
-        </form>
+                        <div class="description grey-text">
+                            <div class="left-box">Max attack: <?php echo $value->getMaxAttack() ?></div>
+                            <div class="progress-background">
+                                <div class="progr1" style="width: <?php echo $value->getMaxAttack() ?>%;"></div>
+                            </div>
+                        </div>
+                        <div class="description grey-text">
+                            <div class="left-box">Max defence: <?php echo $value->getMaxDefence() ?></div>
+                            <div class="progress-background">
+                                <div class="progr1" style="width: <?php echo $value->getMaxDefence() ?>%;"></div>
+                            </div>
+                        </div>
+                        <div class="description grey-text">
+                            <div class="left-box">Max stamina: <?php echo $value->getMaxStamina() ?></div>
+                            <div class="progress-background">
+                                <div class="progr1" style="width: <?php echo $value->getMaxStamina() ?>%;"></div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="card-action" style="margin: 0;">
+                    </div>
+                </div>
+            <?php
+            }
+            ?>
+
+        </container>
+
 
     </section>
-
 
 </main>
 

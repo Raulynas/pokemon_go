@@ -51,7 +51,6 @@ form {
 }
 
 .card {
-	/* height: 240px; */
 	width: 160px;
 	margin: 10px;
 	display: flex;
@@ -59,13 +58,6 @@ form {
 	justify-content: center;
 	align-items: center;
 }
-/* .imgbox {
-	height: 50%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-} */
 
 .card .card-content {
 	padding: 5px;
@@ -84,12 +76,20 @@ form {
 	border: 1px solid grey;
 	height: 12px;
 	box-sizing: unset;
+	position: relative;
 }
-.progr {
+.progr1, .progr2 {
 	height: 12px;
 	margin: 0;
 	background-color: #ee6e73;
+	position: absolute;
+	z-index: 1;
 }
+.progr2 {
+	background-color: #ebe8e8;
+	z-index: 0;
+}
+
 
 /* all users */
 
@@ -117,3 +117,16 @@ table {
 .page-footer {
 	padding-top: 0;
 }
+/* poekmon details */
+
+.pokemon-img {
+	margin: 30px 0 0 ;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-bottom: -30px;
+}
+.pokemon-img > .image > img {
+	height: 120px;
+}
+
