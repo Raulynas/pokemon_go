@@ -17,7 +17,7 @@ $signup = '<li><a href="../views/signup.php">Sign up</a></li>';
 
 $headerNav = $home . $login . $signup;
 if ($_SESSION["logedIn"] == 1) $headerNav = $userhome . $catchPokemon . $allPokemons . $logout;
-if ($_SESSION["logedIn"] == 1 && $_SESSION["permission_lvl"] > 500) $headerNav = $userhome . $allPokemons . $allUsers . $addPokemon . $pokemonDatabase . $logout
+if ($_SESSION["logedIn"] == 1 && $_SESSION["permission_lvl"] > 500) $headerNav = $userhome . $allPokemons . $catchPokemon . $allUsers . $addPokemon . $pokemonDatabase . $logout
 
 
 ?>
@@ -37,7 +37,8 @@ if ($_SESSION["logedIn"] == 1 && $_SESSION["permission_lvl"] > 500) $headerNav =
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
-    <link rel="stylesheet" href="http://localhost/backEnd/pokemon_go/public/css/main.css">
+    <link rel="stylesheet" href="../public/css/main.css">
+
 
 </head>
 
@@ -47,10 +48,17 @@ if ($_SESSION["logedIn"] == 1 && $_SESSION["permission_lvl"] > 500) $headerNav =
         <nav>
             <div class="nav-wrapper">
                 <a href="../index.php" class="brand-logo center">Pokemon GO</a>
+                <a href="#" data-target="mobile-links" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+
                 <ul class="right hide-on-med-and-down">
                     <?php echo $headerNav ?>
                 </ul>
             </div>
         </nav>
+        <ul class="sidenav" id="mobile-links">
+        <!-- event listener in footer -->
+            <?php echo $headerNav ?>
+        </ul>
+
 
     </header>

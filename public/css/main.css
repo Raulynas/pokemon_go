@@ -63,6 +63,9 @@ form {
 	padding: 5px;
 	width: 100%;
 }
+.card .card-action {
+	padding: 16px 0;
+}
 .description {
 	font-size: 12px;
 	margin: 0;
@@ -78,7 +81,8 @@ form {
 	box-sizing: unset;
 	position: relative;
 }
-.progr1, .progr2 {
+.progr1,
+.progr2 {
 	height: 12px;
 	margin: 0;
 	background-color: #ee6e73;
@@ -90,7 +94,6 @@ form {
 	z-index: 0;
 }
 
-
 /* all users */
 
 table > thead a {
@@ -98,11 +101,11 @@ table > thead a {
 	color: #ee6e73;
 	font-weight: bold;
 }
-table .user-details a{
+table .user-details a {
 	text-decoration: none;
 	color: grey;
 }
-table .user-details{
+table .user-details {
 	text-decoration: none;
 	color: grey;
 }
@@ -120,7 +123,7 @@ table {
 /* poekmon details */
 
 .pokemon-img {
-	margin: 30px 0 0 ;
+	margin: 30px 0 0;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -135,4 +138,3 @@ form {
 	margin: 20px auto;
 	padding: 20px;
 }
-

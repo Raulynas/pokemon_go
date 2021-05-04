@@ -1,10 +1,4 @@
-<!-- <footer>
-    <div class="center grey-text">Copyright 2021 Pokemon Go</div>
-</footer>
 
-</body>
-
-</html> -->
 
 
 
@@ -15,7 +9,14 @@
         </div>
     </div>
 </footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="../public/js/materialize.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.sidenav').sidenav();
+    });
+</script>
+
 </body>
 
 </html>

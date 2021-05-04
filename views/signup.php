@@ -39,6 +39,7 @@ if (isset($_POST["submit"])) {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors["email"] = "Email must be a valid email address";
         }
+
     }
 
     //password validation
